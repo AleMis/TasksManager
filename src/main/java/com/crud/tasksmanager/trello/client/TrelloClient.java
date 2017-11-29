@@ -1,5 +1,6 @@
 package com.crud.tasksmanager.trello.client;
 
+import com.crud.tasksmanager.controller.TrelloBoardNotFoundException;
 import com.crud.tasksmanager.domain.TrelloBoardDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,11 +33,9 @@ public class TrelloClient {
     private String trelloUserName;
 
 
-    public List<Optional<TrelloBoardDto>> getTrelloBoards() {
+    public List<TrelloBoardDto> getTrelloBoards() throws TrelloBoardNotFoundException {
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(urlBuilding(), TrelloBoardDto[].class);
-
-        Arrays.asList(boardsResponse);
-        return new ArrayList<>();
+        return Arrays.asList(Optional.ofNullable(boardsResponse).orElseThrow(TrelloBoardNotFoundException::new));
     }
 
     private URI urlBuilding() {
