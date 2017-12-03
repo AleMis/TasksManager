@@ -93,7 +93,7 @@ public class TrelloClientTest {
     }
 
     @Test
-    public void shouldReturnEmptyList() throws URISyntaxException {
+    public void shouldReturnEmptyList() {
         //Given
         TrelloCardDto trelloCardDto = new TrelloCardDto(
                 "Task task",
@@ -102,16 +102,11 @@ public class TrelloClientTest {
                 "test_id"
         );
 
-        URI uri = new URI("http://test.com/cards?key=test&token=test&name=Test%20task&desc=Test%20Description&pos=top&idList=test_id");
-
-        when(restTemplate.postForObject(uri, null, CreatedTrelloCard.class)).thenReturn(null);
-
         //When
         CreatedTrelloCard newCard = trelloClient.createtNewCard(trelloCardDto);
 
         //Then
         assertEquals(null, newCard);
     }
-
 }
 
