@@ -6,9 +6,11 @@ import com.crud.tasksmanager.domain.TrelloCardDto;
 import com.crud.tasksmanager.trello.client.TrelloClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Arrays;
 import java.util.List;
+
 
 @CrossOrigin("*")
 @RestController

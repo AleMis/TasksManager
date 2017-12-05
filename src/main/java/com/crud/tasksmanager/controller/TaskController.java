@@ -1,6 +1,6 @@
 package com.crud.tasksmanager.controller;
 
-import com.crud.tasksmanager.domain.Task;
+
 import com.crud.tasksmanager.domain.TaskDto;
 import com.crud.tasksmanager.mapper.TaskMapper;
 import com.crud.tasksmanager.service.DbService;
