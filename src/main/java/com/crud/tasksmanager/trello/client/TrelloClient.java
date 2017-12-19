@@ -1,13 +1,12 @@
 package com.crud.tasksmanager.trello.client;
 
 import com.crud.tasksmanager.config.TrelloConfig;
-import com.crud.tasksmanager.domain.CreatedTrelloCard;
+import com.crud.tasksmanager.domain.CreatedTrelloCardDto;
 import com.crud.tasksmanager.domain.TrelloBoardDto;
 import com.crud.tasksmanager.domain.TrelloCardDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -48,7 +47,7 @@ public class TrelloClient {
 
     }
 
-    public CreatedTrelloCard createtNewCard(TrelloCardDto trelloCardDto) {
+    public CreatedTrelloCardDto createNewCard(TrelloCardDto trelloCardDto) {
         URI uri = UriComponentsBuilder.fromHttpUrl(trelloConfig.getTrelloApiEndpoint() + "/cards")
                 .queryParam( "key", trelloConfig.getTrelloAppKey())
                 .queryParam( "token" , trelloConfig.getTrelloToken())
@@ -56,7 +55,7 @@ public class TrelloClient {
                 .queryParam("desc", trelloCardDto.getDescription())
                 .queryParam("pos", trelloCardDto.getPos())
                 .queryParam("idList", trelloCardDto.getListId()).build().encode().toUri();
-        return restTemplate.postForObject(uri, null, CreatedTrelloCard.class);
+        return restTemplate.postForObject(uri, null, CreatedTrelloCardDto.class);
     }
 
 
