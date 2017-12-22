@@ -101,17 +101,14 @@ public class TaskControllerTest {
     @Test
     public void testUpdateTask() throws Exception {
         //Given
-        TaskDto taskToUpdateDto = new TaskDto(1L, "Task - update", "Update test task");
-        Task taskToUpdate = new Task(1L, "Task - update", "Update test task");
-        Task savedTask = new Task(1L, "Task - update", "Update test task");
-        TaskDto updatedTaskDto = new TaskDto(1L, "Task - update", "Update test task");
+        TaskDto updatedTask = new TaskDto(1L, "Task - update", "Update test task");
+        Task task = new Task(1L, "Task - update", "Update test task");
 
-        when(taskMapper.mapToTask(taskToUpdateDto)).thenReturn(taskToUpdate);
-        when(dbService.saveTask(taskToUpdate)).thenReturn(savedTask);
-        when(taskMapper.mapToTaskDto(savedTask)).thenReturn(updatedTaskDto);
+        when(dbService.saveTask((ArgumentMatchers.any(Task.class)))).thenReturn(task);
+        when(taskMapper.mapToTaskDto(task)).thenReturn(updatedTask);
 
         Gson gson = new Gson();
-        String jsonContent = gson.toJson(updatedTaskDto);
+        String jsonContent = gson.toJson(updatedTask);
 
         //When & Then
         mockMvc.perform(put("/v1/task/updateTask")
