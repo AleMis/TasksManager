@@ -4,6 +4,7 @@ import com.crud.tasksmanager.domain.Task;
 import com.crud.tasksmanager.domain.TaskDto;
 import com.crud.tasksmanager.domain.TrelloCardDto;
 import com.crud.tasksmanager.mapper.TaskMapper;
+import com.crud.tasksmanager.repository.TaskRepository;
 import com.crud.tasksmanager.service.DbService;
 import com.crud.tasksmanager.trello.facade.TrelloFacade;
 import com.google.gson.Gson;
@@ -23,10 +24,11 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -104,6 +106,7 @@ public class TaskControllerTest {
         TaskDto updatedTask = new TaskDto(1L, "Task - update", "Update test task");
         Task task = new Task(1L, "Task - update", "Update test task");
 
+        when(taskMapper.mapToTask((ArgumentMatchers.any(TaskDto.class)))).thenReturn(task);
         when(dbService.saveTask((ArgumentMatchers.any(Task.class)))).thenReturn(task);
         when(taskMapper.mapToTaskDto(task)).thenReturn(updatedTask);
 
@@ -120,4 +123,42 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.title", is("Task - update")))
                 .andExpect(jsonPath("$.content", is("Update test task")));
     }
+
+    @Test
+    public void testDeleteTask() throws Exception {
+        //Given
+        TaskDto taskDto = new TaskDto(1L, "Test", "Test task");
+
+       doNothing().when(dbService).delete(taskDto.getId());
+
+        //When & Then
+        mockMvc.perform(delete("/v1/task/deleteTask")
+                .param("taskId", "1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(dbService, times(1)).delete(taskDto.getId());
+        verifyNoMoreInteractions(dbService);
+    }
+
+    @Test
+    public void testSaveTask() throws Exception {
+        //Given
+        Task taskToSave = new Task(1L, "Task - update", "Update test task");
+
+        when(taskMapper.mapToTask((ArgumentMatchers.any(TaskDto.class)))).thenReturn(taskToSave);
+        when(dbService.saveTask((ArgumentMatchers.any(Task.class)))).thenReturn(taskToSave);
+
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(taskToSave);
+
+        //When & Then
+        mockMvc.perform(post("/v1/task/createTask")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(jsonContent))
+                .andExpect(status().isOk());
+        verify(dbService, times(1)).saveTask(taskToSave);
+        verifyNoMoreInteractions(dbService);
+    }
+
 }
