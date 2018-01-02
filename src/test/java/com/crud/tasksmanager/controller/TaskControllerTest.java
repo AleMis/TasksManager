@@ -2,11 +2,8 @@ package com.crud.tasksmanager.controller;
 
 import com.crud.tasksmanager.domain.Task;
 import com.crud.tasksmanager.domain.TaskDto;
-import com.crud.tasksmanager.domain.TrelloCardDto;
 import com.crud.tasksmanager.mapper.TaskMapper;
-import com.crud.tasksmanager.repository.TaskRepository;
 import com.crud.tasksmanager.service.DbService;
-import com.crud.tasksmanager.trello.facade.TrelloFacade;
 import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -160,5 +157,4 @@ public class TaskControllerTest {
         verify(dbService, times(1)).saveTask(taskToSave);
         verifyNoMoreInteractions(dbService);
     }
-
 }
