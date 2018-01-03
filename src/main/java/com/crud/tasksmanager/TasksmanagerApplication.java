@@ -12,7 +12,7 @@ public class TasksmanagerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TasksmanagerApplication.class, args);
 	}
-//
+
 //	@Override
 //	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 //		return builder.sources(TasksmanagerApplication.class);
