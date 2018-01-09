@@ -23,7 +23,7 @@ public class MailCreatorService {
         context.setVariable("message", message);
         context.setVariable("tasks_url", "https://alemis.github.io/");
         context.setVariable("button", "Visit website");
-        context.setVariable("admin_name", adminConfig.getAdminMail());
+        context.setVariable("admin_name", adminConfig.getAdminName());
         context.setVariable("goodbye","Best regards!" );
         context.setVariable("company_name", adminConfig.getCompanyName());
         return templateEngine.process("mail/created-trello-card-mail", context);
