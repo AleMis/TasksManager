@@ -14,6 +14,8 @@ public class EmailScheduler {
     private static final String SUBJECT = "Tasks: Once a day email";
     private static final String ONE_TASK = " task";
     private static final String MULTIPLE_TASKS = " tasks";
+    private static final String MAIL_TYPE = "info";
+
 
     @Autowired
     private SimpleEmailService simpleEmailService;
@@ -32,6 +34,6 @@ public class EmailScheduler {
                 adminConfig.getAdminMail(),
                 SUBJECT,
                 "Currently in database you got: " + size + word,
-                "info"));
+                MAIL_TYPE));
     }
 }

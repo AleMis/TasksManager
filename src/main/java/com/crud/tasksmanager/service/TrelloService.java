@@ -17,6 +17,7 @@ import static java.util.Optional.ofNullable;
 public class TrelloService {
 
     private static final String SUBJECT = "Tasks: New Trello card.";
+    private static final String MAIL_TYPE = "build";
 
     @Autowired
     private TrelloClient trelloClient;
@@ -37,7 +38,7 @@ public class TrelloService {
                 adminConfig.getAdminMail(),
                 SUBJECT,
                 "New card: " + card.getName() + " has been created on your Trello account",
-                "build")));
+                MAIL_TYPE)));
         return newCard;
     }
 

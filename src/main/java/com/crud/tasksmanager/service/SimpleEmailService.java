@@ -4,6 +4,7 @@ import com.crud.tasksmanager.domain.Mail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.pretty.MessageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,14 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class SimpleEmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleMailMessage.class);
+    private static final String MAIL_BUILD = "build";
+    private static final String MAIL_INFO = "info";
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -42,11 +47,18 @@ public class SimpleEmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-                if(mail.getMailType().equals("build")) {
-                    messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
-                }else if(mail.getMailType().equals("info")); {
-                    messageHelper.setText(mailCreatorService.informUserAboutNumberOfTasks(mail.getMessage()), true);
-            }
+            messageHelper.setText(setMessageType(mail), true);
+
         };
+    }
+
+    private String setMessageType(final Mail mail) {
+        if(Objects.equals(mail.getMailType(), MAIL_BUILD)) {
+            return mailCreatorService.buildTrelloCardEmail(mail.getMessage());
+        }else if(Objects.equals(mail.getMailType(), MAIL_INFO)) {
+            return mailCreatorService.informUserAboutNumberOfTasks(mail.getMessage());
+        }else {
+            return "not applicable";
+        }
     }
 }
