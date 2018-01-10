@@ -50,8 +50,11 @@ public class MailCreatorService {
 
         Context context = new Context();
         context.setVariable("message", message);
+        context.setVariable("tasks_url", "https://alemis.github.io/");
         context.setVariable("quantity", tasksQuantity);
         context.setVariable("button", "Visit website");
+        context.setVariable("admin_name", adminConfig.getAdminName());
+        context.setVariable("company_name", adminConfig.getCompanyName());
         context.setVariable("show_button", true);
         context.setVariable("is_friend", true);
         context.setVariable("admin_config", adminConfig);

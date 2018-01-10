@@ -1,10 +1,6 @@
 package com.crud.tasksmanager.service;
 
 import com.crud.tasksmanager.domain.Mail;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.pretty.MessageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
