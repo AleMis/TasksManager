@@ -15,6 +15,9 @@ import java.util.List;
 public class MailCreatorService {
 
     @Autowired
+    private DbService dbService;
+
+    @Autowired
     private AdminConfig adminConfig;
 
     @Autowired
@@ -40,5 +43,20 @@ public class MailCreatorService {
         context.setVariable("admin_config", adminConfig);
         context.setVariable("application_functionality", functionality);
         return templateEngine.process("mail/created-trello-card-mail", context);
+    }
+
+    public String informUserAboutNumberOfTasks(String message) {
+        int tasksQuantity = dbService.getAllTasks().size();
+
+        Context context = new Context();
+        context.setVariable("message", message);
+        context.setVariable("quantity", tasksQuantity);
+        context.setVariable("button", "Visit website");
+        context.setVariable("show_button", true);
+        context.setVariable("is_friend", true);
+        context.setVariable("admin_config", adminConfig);
+        context.setVariable("goodbye","Best regards!" );
+        return templateEngine.process("mail/information-tasks-quantity-mail.html", context);
+
     }
 }
