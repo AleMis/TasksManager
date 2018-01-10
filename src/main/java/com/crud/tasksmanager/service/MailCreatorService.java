@@ -56,7 +56,7 @@ public class MailCreatorService {
         context.setVariable("is_friend", true);
         context.setVariable("admin_config", adminConfig);
         context.setVariable("goodbye","Best regards!" );
-        return templateEngine.process("mail/information-tasks-quantity-mail.html", context);
+        return templateEngine.process("mail/information-tasks-quantity-mail", context);
 
     }
 }
