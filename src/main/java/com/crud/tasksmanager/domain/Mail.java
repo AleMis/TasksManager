@@ -20,6 +20,6 @@ public class Mail {
         this.mailTo = mailTo;
         this.subject = subject;
         this.message = message;
-        this.mailTo = mailType;
+        this.mailType = mailType;
     }
 }
