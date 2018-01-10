@@ -42,6 +42,7 @@ public class MailCreatorService {
         context.setVariable("is_friend", true);
         context.setVariable("admin_config", adminConfig);
         context.setVariable("application_functionality", functionality);
+        context.setVariable("preview_message", "Trello Card Created" );
         return templateEngine.process("mail/created-trello-card-mail", context);
     }
 
@@ -59,6 +60,7 @@ public class MailCreatorService {
         context.setVariable("is_friend", true);
         context.setVariable("admin_config", adminConfig);
         context.setVariable("goodbye","Best regards!" );
+        context.setVariable("preview_message", "Tasks Status" );
         return templateEngine.process("mail/information-tasks-quantity-mail", context);
 
     }
