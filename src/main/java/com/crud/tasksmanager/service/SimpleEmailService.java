@@ -44,7 +44,6 @@ public class SimpleEmailService {
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
             messageHelper.setText(setMessageType(mail), true);
-
         };
     }
 
