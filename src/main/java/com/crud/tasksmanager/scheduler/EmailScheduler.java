@@ -26,7 +26,7 @@ public class EmailScheduler {
     @Autowired
     private AdminConfig adminConfig;
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void sendInformationEmail() {
         long size = taskRepository.count();
         String word = size>1 ? MULTIPLE_TASKS : ONE_TASK;
