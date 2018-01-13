@@ -88,8 +88,7 @@ public class TaskControllerTest {
         when(taskMapper.mapToTaskDto(task.orElseThrow(TaskNotFoundException::new))).thenReturn(taskDto);
 
         //When & Then
-        mockMvc.perform(get("/v1/tasks")
-                .param("taskId", "1")
+        mockMvc.perform(get("/v1/tasks/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
@@ -129,8 +128,7 @@ public class TaskControllerTest {
        doNothing().when(dbService).delete(taskDto.getId());
 
         //When & Then
-        mockMvc.perform(delete("/v1/tasks")
-                .param("taskId", "1")
+        mockMvc.perform(delete("/v1/tasks/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(dbService, times(1)).delete(taskDto.getId());
