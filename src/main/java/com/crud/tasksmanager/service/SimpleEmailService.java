@@ -17,8 +17,7 @@ import java.util.Objects;
 public class SimpleEmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleMailMessage.class);
-    private static final String MAIL_BUILD = "build";
-    private static final String MAIL_INFO = "info";
+
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -30,30 +29,11 @@ public class SimpleEmailService {
         LOGGER.info("Starting email preparation...");
         try {
 
-            javaMailSender.send(createMimeMessage(mail));
+            javaMailSender.send(mailCreatorService.createMimeMessage(mail));
             LOGGER.info("Email has been sent.");
 
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
-        }
-    }
-
-    private MimeMessagePreparator createMimeMessage(final Mail mail) {
-        return mimeMessage -> {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setTo(mail.getMailTo());
-            messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(setMessageType(mail), true);
-        };
-    }
-
-    private String setMessageType(final Mail mail) {
-        if(Objects.equals(mail.getMailType(), MAIL_BUILD)) {
-            return mailCreatorService.buildTrelloCardEmail(mail.getMessage());
-        }else if(Objects.equals(mail.getMailType(), MAIL_INFO)) {
-            return mailCreatorService.informUserAboutNumberOfTasks(mail.getMessage());
-        }else {
-            return "not applicable";
         }
     }
 }

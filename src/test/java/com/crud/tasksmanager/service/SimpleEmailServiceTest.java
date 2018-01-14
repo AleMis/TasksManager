@@ -13,9 +13,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,8 +35,8 @@ public class SimpleEmailServiceTest {
     private MailCreatorService mailCreatorService;
 
 
-//    @Test
-    public void shouldSendEmail() {
+    @Test
+    public void shouldSendEmail() throws MessagingException {
         //Given
         Mail mail = new Mail("test@test.com", "Test","Test Message", "build");
 
@@ -45,12 +47,12 @@ public class SimpleEmailServiceTest {
                 messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
             };
 
+        when(mailCreatorService.createMimeMessage(any())).thenReturn(createMimeMessage);
+
         //When
         simpleEmailService.send(mail);
 
         //Then
         verify(javaMailSender, times(1)).send(createMimeMessage);
     }
-
-
 }

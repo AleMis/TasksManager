@@ -1,18 +1,25 @@
 package com.crud.tasksmanager.service;
 
 import com.crud.tasksmanager.config.AdminConfig;
+import com.crud.tasksmanager.domain.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
 public class MailCreatorService {
+
+    private static final String MAIL_BUILD = "build";
+    private static final String MAIL_INFO = "info";
 
     @Autowired
     private DbService dbService;
@@ -62,6 +69,25 @@ public class MailCreatorService {
         context.setVariable("goodbye","Best regards!" );
         context.setVariable("preview_message", "Tasks Status" );
         return templateEngine.process("mail/information-tasks-quantity-mail", context);
+    }
 
+    public MimeMessagePreparator createMimeMessage(final Mail mail) {
+        MimeMessagePreparator mimeMessagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(chooseMailType(mail), true);
+        };
+        return mimeMessagePreparator;
+    }
+
+    private String chooseMailType(final Mail mail) {
+        if(Objects.equals(mail.getMailType(), MAIL_BUILD)) {
+            return buildTrelloCardEmail(mail.getMessage());
+        }else if(Objects.equals(mail.getMailType(), MAIL_INFO)) {
+            return informUserAboutNumberOfTasks(mail.getMessage());
+        }else {
+            return "not applicable";
+        }
     }
 }
